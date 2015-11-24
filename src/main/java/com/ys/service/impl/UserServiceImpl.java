@@ -21,4 +21,10 @@ public class UserServiceImpl implements IUserService {
 		return null;
 	}
 
+	@Override
+	public Map<String, String> userRegister(String userId, String userPwd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
