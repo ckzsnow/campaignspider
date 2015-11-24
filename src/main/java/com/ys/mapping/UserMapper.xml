@@ -25,9 +25,9 @@
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updatePwdByUserId" parameterType="com.ys.model.User">
+  <update id="updateUserPwd" parameterType="com.ys.model.User">
     update user
     set user_pwd = #{userPwd,jdbcType=VARCHAR}
-    where user_id = #{user_id,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>

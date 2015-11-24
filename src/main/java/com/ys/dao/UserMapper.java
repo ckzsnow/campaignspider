@@ -6,10 +6,10 @@ public interface UserMapper {
 	
     int deleteByUserId(String userId);
 
-    int insert(User record);
+    int insert(User user);
 
     User selectByUserId(String userId);
 
-    int updateUserPwd(User record);
+    int updateUserPwd(User user);
     
 }
