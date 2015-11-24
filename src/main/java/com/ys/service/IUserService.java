@@ -8,4 +8,6 @@ public interface IUserService {
 	
 	public Map<String, String> userRegister(String userId, String userPwd);
 	
+	public Map<String, String> userModifyPwd(String userId, String userOldPwd, String userNewPwd);
+	
 }

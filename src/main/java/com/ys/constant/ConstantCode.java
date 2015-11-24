@@ -1,7 +1,12 @@
 package com.ys.constant;
 
-public interface ErrorCode {
+public interface ConstantCode {
 
+	public static final String ERROR_CODE = "error_code";
+	public static final String ERROR_MSG = "error_msg";
+	
+	public static final String USER_SESSION_ID = "user_id";
+	
 	//user login code
 	public static final String USER_LOGIN_EMPTY_ERROR_CODE = "001001";
 	public static final String USER_LOGIN_EMPTY_ERROR_MSG = "用户账号或密码为空！";
@@ -9,8 +14,6 @@ public interface ErrorCode {
 	public static final String USER_LOGIN_ID_NOT_EXISTED_ERROR_MSG = "用户账号不存在！";
 	public static final String USER_LOGIN_PWD_WRONG_ERROR_CODE = "001003";
 	public static final String USER_LOGIN_PWD_WRONG_ERROR_MSG = "用户密码不正确！";
-	public static final String USER_LOGIN_VERIFY_CODE_WRONG_ERROR_CODE = "001004";
-	public static final String USER_LOGIN_VERIFY_CODE_WRONG_ERROR_MSG = "验证码不正确！";
 	public static final String USER_LOGIN_SUCCESS_CODE = "001000";
 	public static final String USER_LOGIN_SUCCESS_MSG = "登陆成功！";
 	//user register code
