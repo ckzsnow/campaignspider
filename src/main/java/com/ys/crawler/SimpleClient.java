@@ -13,11 +13,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-public class SimpleClient {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+import com.ys.model.Campaign;
+import com.ys.service.ICampaignService;
+import com.ys.service.IUserService;
+@Component
+public class SimpleClient {
+	@Autowired
+	private ICampaignService campaignService ;
+	
 	public void parseUri(String date){
 //		 	String url="http://www.huodongxing.com/eventlist?orderby=v&range=1&d=t2&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
-		 	String url="http://www.huodongxing.com/eventlist?orderby=v&range=1&d=ts&date="+date+"&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
+		 	String url="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date="+date+"&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
 		 	// 设置代理服务器地址和端口        
 	      // 使用 GET 方法 ，如果服务器需要通过 HTTPS 连接，那只需要将下面 URL 中的 http 换成 https   
 		  HttpMethod method=new GetMethod(url);  
@@ -36,6 +46,7 @@ public class SimpleClient {
 		  }
 	}
 	public int showInformation(HttpMethod method ){
+		Campaign campaign=new Campaign();
 		HttpClient client = new HttpClient();   
 	      try {
 			client.executeMethod(method);
@@ -78,12 +89,30 @@ public class SimpleClient {
 				 Element applyHref = lis.get(i).select("div[class=apply] a[href] ").last(); 
 				 String applyHrefString=applyHref.toString().substring(9, applyHref.toString().lastIndexOf("\"><img"));
 		        System.out.println("背景图片："+imgString);    
+		        campaign.setActSnapshot(imgString);
 				System.out.println("标题："+newtitle.text());
+				campaign.setActName(newtitle.text());
 				 System.out.println("作者："+author.text());
+				 campaign.setActOriginator(author.text());
 				 System.out.println("作者头像："+authorImgString);
+				 campaign.setActOriginatorImage(authorImgString);
 				 System.out.println("时间："+time);
+				 campaign.setActTime(time);
 				System.out.println("地址："+locations);
+				campaign.setActDestination(locations);
+				campaign.setActInterestSum(1);
+				campaign.setActEnrollSum(1);
 				System.out.println("报名地址：http://www.huodongxing.com/"+applyHrefString);
+				campaign.setActEnroll("http://www.huodongxing.com/"+applyHrefString);
+				if(campaign!=null){
+					try{
+						campaignService.writeInformationDB(campaign);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+				}
+				
 //				System.out.println("-------------------------------------------------------------------------------------------");
 			}
 			//判断当前信息有多少页
@@ -93,11 +122,11 @@ public class SimpleClient {
 	      return pages.size()-2;
 	
 	}
-	public static void main(String[] args) throws IOException {
-
-		getDates();
-	}
-	public static void getDates(){
+//	public static void main(String[] args) throws IOException {
+//
+//		getDates();
+//	}
+	public  void getDates(){
 		 
 		   SimpleClient sc=new SimpleClient();
 //		   sc.parseUri();
@@ -110,7 +139,7 @@ public class SimpleClient {
 //			System.out.println(todayNum);
 			for(int i=todayNum;i<=dayNum;i++){
 				System.out.println(Integer.parseInt(dates[0])+"----"+i);
-				sc.parseUri(Integer.parseInt(dates[0])+"-"+i);
+				sc.parseUri(Integer.parseInt(dates[0])+"-"+Integer.parseInt(dates[1])+"-"+i);
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
@@ -129,7 +158,7 @@ public class SimpleClient {
 				}
 			}
 	}
-	   public static int judgeDay(int year, int month) {
+	   public  int judgeDay(int year, int month) {
 	        Calendar c = Calendar.getInstance();
 	        c.set(Calendar.DAY_OF_MONTH, 1); // 设置日期
 	        c.set(Calendar.YEAR, year);

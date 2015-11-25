@@ -20,7 +20,7 @@ public class Campaign {
     private String actOriginator;
     
     private String actOriginatorImage;
-
+    //报名链接
     private String actEnroll;
 
     private Timestamp createTime;
