@@ -52,6 +52,7 @@
 	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" cache-period="3600" />
 	<mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/" cache-period="3600" />
 	<mvc:resources mapping="/views/**" location="/WEB-INF/views/" cache-period="3600" />	
+	<mvc:resources mapping="/lib/**" location="/WEB-INF/lib/" cache-period="3600" />
 	<mvc:resources mapping="/files/**" location="file:/home/files/" cache-period="3600" />
 	<!-- static resources config end -->	
 

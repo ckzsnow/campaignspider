@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* 你自己的样式 */
+.header {
+	background-position-x:50px;
+	text-align:right;
+	line-height:60px;
+}
+.header .header_title {
+	color:white;
+	margin-right:50px;
+}
+.loginBox {
+	width:450xp;
+	margin-left: -159px;
+	margin-top: -184px;
+	background: url(../images/admin-loginform-bg1.png) no-repeat;
+}
+.loginBox .input-text {
+    width: 260px;
+}
