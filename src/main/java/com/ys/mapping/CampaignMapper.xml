@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ys.dao.CampaignMapper" >
+  <resultMap id="BaseResultMap" type="com.ys.model.Campaign" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="act_name" property="actName" jdbcType="VARCHAR" />
+    <result column="act_time" property="actTime" jdbcType="VARCHAR" />
+    <result column="act_destination" property="actDestination" jdbcType="VARCHAR" />
+    <result column="act_enroll_sum" property="actEnrollSum" jdbcType="INTEGER" />
+    <result column="act_interest_sum" property="actInterestSum" jdbcType="INTEGER" />
+    <result column="act_snapshot" property="actSnapshot" jdbcType="VARCHAR" />
+    <result column="act_originator" property="actOriginator" jdbcType="VARCHAR" />
+    <result column="act_originator_image" property="actOriginatorImage" jdbcType="VARCHAR" />
+    <result column="act_enroll" property="actEnroll" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ys.model.Campaign" extends="BaseResultMap" >
+    <result column="act_details" property="actDetails" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, act_name, act_time, act_destination, act_enroll_sum, act_interest_sum, act_snapshot, 
+    act_originator, act_originator_image, act_enroll, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    act_details
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from campaigns
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from campaigns
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ys.model.Campaign" >
+    insert into campaigns (id, act_name, act_time, 
+      act_destination, act_enroll_sum, act_interest_sum, 
+      act_snapshot, act_originator, act_originator_image, 
+      act_enroll, create_time, act_details
+      )
+    values (#{id,jdbcType=BIGINT}, #{actName,jdbcType=VARCHAR}, #{actTime,jdbcType=VARCHAR}, 
+      #{actDestination,jdbcType=VARCHAR}, #{actEnrollSum,jdbcType=INTEGER}, #{actInterestSum,jdbcType=INTEGER}, 
+      #{actSnapshot,jdbcType=VARCHAR}, #{actOriginator,jdbcType=VARCHAR}, #{actOriginatorImage,jdbcType=VARCHAR}, 
+      #{actEnroll,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{actDetails,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ys.model.Campaign" >
+    insert into campaigns
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="actName != null" >
+        act_name,
+      </if>
+      <if test="actTime != null" >
+        act_time,
+      </if>
+      <if test="actDestination != null" >
+        act_destination,
+      </if>
+      <if test="actEnrollSum != null" >
+        act_enroll_sum,
+      </if>
+      <if test="actInterestSum != null" >
+        act_interest_sum,
+      </if>
+      <if test="actSnapshot != null" >
+        act_snapshot,
+      </if>
+      <if test="actOriginator != null" >
+        act_originator,
+      </if>
+      <if test="actOriginatorImage != null" >
+        act_originator_image,
+      </if>
+      <if test="actEnroll != null" >
+        act_enroll,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="actDetails != null" >
+        act_details,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="actName != null" >
+        #{actName,jdbcType=VARCHAR},
+      </if>
+      <if test="actTime != null" >
+        #{actTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actDestination != null" >
+        #{actDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="actEnrollSum != null" >
+        #{actEnrollSum,jdbcType=INTEGER},
+      </if>
+      <if test="actInterestSum != null" >
+        #{actInterestSum,jdbcType=INTEGER},
+      </if>
+      <if test="actSnapshot != null" >
+        #{actSnapshot,jdbcType=VARCHAR},
+      </if>
+      <if test="actOriginator != null" >
+        #{actOriginator,jdbcType=VARCHAR},
+      </if>
+      <if test="actOriginatorImage != null" >
+        #{actOriginatorImage,jdbcType=VARCHAR},
+      </if>
+      <if test="actEnroll != null" >
+        #{actEnroll,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actDetails != null" >
+        #{actDetails,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ys.model.Campaign" >
+    update campaigns
+    <set >
+      <if test="actName != null" >
+        act_name = #{actName,jdbcType=VARCHAR},
+      </if>
+      <if test="actTime != null" >
+        act_time = #{actTime,jdbcType=VARCHAR},
+      </if>
+      <if test="actDestination != null" >
+        act_destination = #{actDestination,jdbcType=VARCHAR},
+      </if>
+      <if test="actEnrollSum != null" >
+        act_enroll_sum = #{actEnrollSum,jdbcType=INTEGER},
+      </if>
+      <if test="actInterestSum != null" >
+        act_interest_sum = #{actInterestSum,jdbcType=INTEGER},
+      </if>
+      <if test="actSnapshot != null" >
+        act_snapshot = #{actSnapshot,jdbcType=VARCHAR},
+      </if>
+      <if test="actOriginator != null" >
+        act_originator = #{actOriginator,jdbcType=VARCHAR},
+      </if>
+      <if test="actOriginatorImage != null" >
+        act_originator_image = #{actOriginatorImage,jdbcType=VARCHAR},
+      </if>
+      <if test="actEnroll != null" >
+        act_enroll = #{actEnroll,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actDetails != null" >
+        act_details = #{actDetails,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ys.model.Campaign" >
+    update campaigns
+    set act_name = #{actName,jdbcType=VARCHAR},
+      act_time = #{actTime,jdbcType=VARCHAR},
+      act_destination = #{actDestination,jdbcType=VARCHAR},
+      act_enroll_sum = #{actEnrollSum,jdbcType=INTEGER},
+      act_interest_sum = #{actInterestSum,jdbcType=INTEGER},
+      act_snapshot = #{actSnapshot,jdbcType=VARCHAR},
+      act_originator = #{actOriginator,jdbcType=VARCHAR},
+      act_originator_image = #{actOriginatorImage,jdbcType=VARCHAR},
+      act_enroll = #{actEnroll,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      act_details = #{actDetails,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ys.model.Campaign" >
+    update campaigns
+    set act_name = #{actName,jdbcType=VARCHAR},
+      act_time = #{actTime,jdbcType=VARCHAR},
+      act_destination = #{actDestination,jdbcType=VARCHAR},
+      act_enroll_sum = #{actEnrollSum,jdbcType=INTEGER},
+      act_interest_sum = #{actInterestSum,jdbcType=INTEGER},
+      act_snapshot = #{actSnapshot,jdbcType=VARCHAR},
+      act_originator = #{actOriginator,jdbcType=VARCHAR},
+      act_originator_image = #{actOriginatorImage,jdbcType=VARCHAR},
+      act_enroll = #{actEnroll,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

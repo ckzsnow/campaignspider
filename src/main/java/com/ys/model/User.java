@@ -1,5 +1,7 @@
 package com.ys.model;
 
+import java.sql.Timestamp;
+
 public class User {
     private Integer id;
 
@@ -7,6 +9,12 @@ public class User {
 
     private String userPwd;
 
+    private Timestamp createTime;
+
+    public User() {
+    	this.createTime = new Timestamp(System.currentTimeMillis());
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -29,5 +37,13 @@ public class User {
 
     public void setUserPwd(String userPwd) {
         this.userPwd = userPwd == null ? null : userPwd.trim();
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }

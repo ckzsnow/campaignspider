@@ -1,31 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ys.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.ys.model.User">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ys.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.ys.model.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, user_id, user_pwd
+  <sql id="Base_Column_List" >
+    id, user_id, user_pwd, create_time
   </sql>
-  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
     <include refid="Base_Column_List" />
     from user
-    where user_id = #{user_id,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByUserId" parameterType="java.lang.String">
+  <delete id="deleteByUserId" parameterType="java.lang.String" >
     delete from user
-    where user_id = #{user_id,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.ys.model.User">
-    insert into user (id, user_id, user_pwd
-      )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.ys.model.User" >
+    insert into user (id, user_id, user_pwd, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateUserPwd" parameterType="com.ys.model.User">
+  <update id="updateUserPwd" parameterType="com.ys.model.User" >
     update user
     set user_pwd = #{userPwd,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
