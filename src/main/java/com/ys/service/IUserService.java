@@ -12,5 +12,5 @@ public interface IUserService {
 	
 	public Map<String, String> userModifyPwd(String userId, String userOldPwd, String userNewPwd);
 	
-	public Map<String,String> writeInformationDB(Campaign campaign);
+	
 }
