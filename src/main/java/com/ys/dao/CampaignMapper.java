@@ -16,4 +16,6 @@ public interface CampaignMapper {
     int updateByPrimaryKeyWithBLOBs(Campaign record);
 
     int updateByPrimaryKey(Campaign record);
+    
+    int writeDB(Campaign record);
 }

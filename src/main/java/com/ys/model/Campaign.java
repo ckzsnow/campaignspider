@@ -8,17 +8,17 @@ public class Campaign {
     private String actName;
 
     private String actTime;
-
+    //目的地
     private String actDestination;
-
+    //收藏人数
     private Integer actEnrollSum;
-
+    //报名人数
     private Integer actInterestSum;
-
+    //活动快照
     private String actSnapshot;
-
+    //发起人
     private String actOriginator;
-
+    
     private String actOriginatorImage;
 
     private String actEnroll;

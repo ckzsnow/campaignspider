@@ -15,9 +15,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 public class SimpleClient {
 
-	public void parseUri(){
-		 	String url="http://www.huodongxing.com/eventlist?orderby=v&range=1&d=t2&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
-	      // 设置代理服务器地址和端口        
+	public void parseUri(String date){
+//		 	String url="http://www.huodongxing.com/eventlist?orderby=v&range=1&d=t2&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
+		 	String url="http://www.huodongxing.com/eventlist?orderby=v&range=1&d=ts&date="+date+"&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
+		 	// 设置代理服务器地址和端口        
 	      // 使用 GET 方法 ，如果服务器需要通过 HTTPS 连接，那只需要将下面 URL 中的 http 换成 https   
 		  HttpMethod method=new GetMethod(url);  
 		//使用POST方法  
@@ -26,13 +27,13 @@ public class SimpleClient {
 		  if(num==1){
 			  System.out.println("----------------------------------");
 		  }
-//		  else{
-//			  for(int i=0;i<num;i++){
-//				  url=url+"&page="+(i+2);
-//				  HttpMethod  method2=new GetMethod(url);
-//				  this.showInformation(method2);
-//			  }
-//		  }
+		  else{
+			  for(int i=0;i<num;i++){
+				  url=url+"&page="+(i+2);
+				  HttpMethod  method2=new GetMethod(url);
+				  this.showInformation(method2);
+			  }
+		  }
 	}
 	public int showInformation(HttpMethod method ){
 		HttpClient client = new HttpClient();   
@@ -93,25 +94,41 @@ public class SimpleClient {
 	
 	}
 	public static void main(String[] args) throws IOException {
-		 
-	   SimpleClient sc=new SimpleClient();
-//	   sc.parseUri();
-		SimpleDateFormat df = new SimpleDateFormat("dd ");//设置日期格式
-		SimpleDateFormat year = new SimpleDateFormat("yyyy-MM");
-		String[] dates=year.format(new Date()).split("-");
-		int dayNum=sc.judgeDay(Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
-//		System.out.println(dayNum);
-		int todayNum=Integer.parseInt(df.format(new Date()).trim());
-//		System.out.println(todayNum);
-		for(int i=todayNum;i<=dayNum;i++){
-			System.out.println(Integer.parseInt(dates[0])+"----"+i);
-		}
-		for(int i=1;i<=todayNum;i++){
-			System.out.println(Integer.parseInt(dates[0])+"----------"+(Integer.parseInt(dates[1])+1)+"--"+i);
-		}
-		
+
+		getDates();
 	}
-	
+	public static void getDates(){
+		 
+		   SimpleClient sc=new SimpleClient();
+//		   sc.parseUri();
+			SimpleDateFormat df = new SimpleDateFormat("dd ");//设置日期格式
+			SimpleDateFormat year = new SimpleDateFormat("yyyy-MM");
+			String[] dates=year.format(new Date()).split("-");
+			int dayNum=sc.judgeDay(Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
+//			System.out.println(dayNum);
+			int todayNum=Integer.parseInt(df.format(new Date()).trim());
+//			System.out.println(todayNum);
+			for(int i=todayNum;i<=dayNum;i++){
+				System.out.println(Integer.parseInt(dates[0])+"----"+i);
+				sc.parseUri(Integer.parseInt(dates[0])+"-"+i);
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			for(int i=1;i<=todayNum;i++){
+				System.out.println(Integer.parseInt(dates[0])+"----------"+(Integer.parseInt(dates[1])+1)+"--"+i);
+				sc.parseUri(Integer.parseInt(dates[0])+"-"+(Integer.parseInt(dates[1])+1)+"-"+i);
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+	}
 	   public static int judgeDay(int year, int month) {
 	        Calendar c = Calendar.getInstance();
 	        c.set(Calendar.DAY_OF_MONTH, 1); // 设置日期
