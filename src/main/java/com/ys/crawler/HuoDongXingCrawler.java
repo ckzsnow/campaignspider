@@ -67,6 +67,7 @@ public class HuoDongXingCrawler {
 	       String title=doc.title();
 			System.out.println("-------------------------------<"+title+">---------------------------------------");
 			Elements lis=doc.select("[class=event-horizontal-list-new] >li");
+			
 			for(int i=0;i<lis.size();i++){
 				//背景图片
 				Element bgimg = lis.get(i).select(" a img[src]").first();  

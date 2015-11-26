@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Campaign {
     private Long id;
-
+    
     private String actName;
 
     private String actTime;
