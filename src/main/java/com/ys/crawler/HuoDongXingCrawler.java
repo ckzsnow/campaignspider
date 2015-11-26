@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import com.ys.model.Campaign;
 import com.ys.service.ICampaignService;
 @Component
-public class SimpleClient {
+public class HuoDongXingCrawler {
 	@Autowired
 	private ICampaignService campaignService ;
 	

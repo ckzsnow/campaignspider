@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SimpleClientTest {
 	
 	@Autowired
-	SimpleClient sc;
+	HuoDongXingCrawler sc;
 
 	@Test
 	public void test() {
