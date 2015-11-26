@@ -6,11 +6,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class WelcomeController {
+public class HTMLController {
 
 	@RequestMapping("/")
-	public String userLogout(HttpServletRequest request) {
+	public String rootHtml(HttpServletRequest request) {
 		return "redirect:/views/login.html";
+	}
+	
+	@RequestMapping("/admin/index")
+	public String adminHtml(HttpServletRequest request) {
+		return "redirect:/views/index.html";
 	}
 	
 }

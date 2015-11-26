@@ -24,7 +24,7 @@ public class UserController {
 		String userId = request.getParameter("userId");
 		String userPwd = request.getParameter("userPwd");
 		Map<String, String> retMap = userService.userLogin(userId, userPwd);
-		if(retMap != null && retMap.containsKey(ConstantCode.USER_LOGIN_SUCCESS_CODE)) {
+		if(retMap != null && retMap.containsKey(ConstantCode.ERROR_CODE) && retMap.get(ConstantCode.ERROR_CODE).equals(ConstantCode.USER_LOGIN_SUCCESS_CODE)) {
 			request.getSession().setAttribute(ConstantCode.USER_SESSION_ID, userId);
 		}
 		return retMap;
@@ -36,7 +36,7 @@ public class UserController {
 		String userId = request.getParameter("userId");
 		String userPwd = request.getParameter("userPwd");
 		Map<String, String> retMap = userService.userRegister(userId, userPwd);
-		if(retMap != null && retMap.containsKey(ConstantCode.USER_REGISTER_SUCCESS_CODE)) {
+		if(retMap != null && retMap.containsKey(ConstantCode.ERROR_CODE) && retMap.get(ConstantCode.ERROR_CODE).equals(ConstantCode.USER_REGISTER_SUCCESS_CODE)) {
 			request.getSession().setAttribute(ConstantCode.USER_SESSION_ID, userId);
 		}
 		return retMap;
@@ -49,7 +49,7 @@ public class UserController {
 		String userOldPwd = request.getParameter("userOldPwd");
 		String userNewPwd = request.getParameter("userNewPwd");
 		Map<String, String> retMap = userService.userModifyPwd(userId, userOldPwd, userNewPwd);
-		if(retMap != null && retMap.containsKey(ConstantCode.USER_MODIFY_PWD_SUCCESS_CODE)) {
+		if(retMap != null && retMap.containsKey(ConstantCode.ERROR_CODE) && retMap.get(ConstantCode.ERROR_CODE).equals(ConstantCode.USER_MODIFY_PWD_SUCCESS_CODE)) {
 			request.getSession().removeAttribute(ConstantCode.USER_SESSION_ID);
 		}
 		return retMap;
@@ -58,6 +58,6 @@ public class UserController {
 	@RequestMapping("/userLogout")
 	public String userLogout(HttpServletRequest request) {
 		request.getSession().removeAttribute(ConstantCode.USER_SESSION_ID);
-		return "redirect:/views/.html";
+		return "redirect:/views/login.html";
 	}
 }
