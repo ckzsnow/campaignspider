@@ -103,16 +103,15 @@ public class SimpleClient {
 				campaign.setActEnrollSum(1);
 				System.out.println("报名地址：http://www.huodongxing.com/"+applyHrefString);
 				campaign.setActEnroll("http://www.huodongxing.com/"+applyHrefString);
-				if(campaign!=null){
-					try{
-						campaignService.writeInformationDB(campaign);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-					
-				}
+//				if(campaign!=null){
+//					try{
+//						campaignService.writeInformationDB(campaign);
+//					}catch(Exception e){
+//						e.printStackTrace();
+//					}
+//					
+//				}
 				
-//				System.out.println("-------------------------------------------------------------------------------------------");
 			}
 			//判断当前信息有多少页
 			Elements pages=doc.select("div[class=article] > div[class=pagination] >ul > li");
@@ -121,11 +120,11 @@ public class SimpleClient {
 	      return pages.size()-2;
 	
 	}
-//	public static void main(String[] args) throws IOException {
-//
-//		getDates();
-//	}
-	public  void getDates(){
+	public static void main(String[] args) throws IOException {
+
+		getDates();
+	}
+	public static  void getDates(){
 		 
 		   
 //		   sc.parseUri();
