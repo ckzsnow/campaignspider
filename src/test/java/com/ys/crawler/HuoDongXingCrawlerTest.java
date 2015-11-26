@@ -14,7 +14,7 @@ public class HuoDongXingCrawlerTest {
 
 	@Test
 	public void test() {
-		hdxc.getDates();
+		hdxc.externalMethod();
 	}
 
 }
