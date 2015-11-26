@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.ys.model.Campaign;
 import com.ys.service.ICampaignService;
+import com.ys.service.impl.CampaignServiceImpl;
 @Component
 public class HuoDongXingCrawler {
 	@Autowired
@@ -35,7 +36,7 @@ public class HuoDongXingCrawler {
 		for(int i=todayNum;i<=dayNum;i++){
 			String url1=Integer.parseInt(dates[0])+"-"+dates[1]+"-"+i;
 			System.out.println(url1);
-			String newUrl1="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date=DATE&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
+			String newUrl1="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date=DATE&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7&page=PAGE";
 			String nu2=newUrl1.replace("DATE", url1);
 			list.add(nu2);
 
@@ -43,7 +44,7 @@ public class HuoDongXingCrawler {
 		for(int i=1;i<=todayNum;i++){
 			String url2=Integer.parseInt(dates[0])+"-"+(Integer.parseInt(dates[1])+1)+"-"+i;
 			System.out.println(url2);
-			String newUrl1="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date=DATE&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
+			String newUrl1="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date=DATE&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7&page=PAGE";
 			String nu2=newUrl1.replace("DATE", url2);
 			list.add(nu2);
 
@@ -51,21 +52,35 @@ public class HuoDongXingCrawler {
 		return list;
 	}
 	private static List<Campaign> crawlTaskData(List<String> list){
+		int pageNum=1;
 		List<Campaign> campaignList=new ArrayList<>();
 		Campaign campaign=new Campaign();
 		HttpClient client = new HttpClient(); 
 		Document doc = null;
+		boolean bodyIsNull=true;
+		while(bodyIsNull){
+			
 		for(int i=0;i<list.size();i++){
 			// 使用 GET 方法 ，如果服务器需要通过 HTTPS 连接，那只需要将下面 URL 中的 http 换成 https   
-			  HttpMethod method=new GetMethod(list.get(i)); 
 			  try {
-				client.executeMethod(method);
+				  String url=list.get(i).replace("PAGE",String.valueOf(pageNum));
+//				  HttpMethod method=new GetMethod("http://www.huodongxing.com/eventlist?orderby=r&d=ts&date=2015-11-26&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7&page=1111"); 
+				  HttpMethod method=new GetMethod(list.get(i));
+				  client.executeMethod(method);
 				 //打印服务器返回的状态  
 			    System.out.println(method.getStatusLine());
 			    doc = Jsoup.parse(method.getResponseBodyAsString());
 			    String title=doc.title();
 			    System.out.println("----"+title+"----");
+			    if(doc.getAllElements().text().indexOf("找不到活动，请修改查询范围")==-1){
+			    	pageNum++;
+			    }else{
+			    	//-----------------page noDeatil
+			    	System.out.println("page No details");
+			    	return campaignList;
+			    }
 			    Elements lis=doc.select("[class=event-horizontal-list-new] >li");
+
 				for(int j=0;j<lis.size();j++){
 					//背景图片
 					Element bgimg = lis.get(j).select(" a img[src]").first();  
@@ -115,8 +130,10 @@ public class HuoDongXingCrawler {
 				e.printStackTrace();
 			}
 		}
+		
+		}//while
 		System.out.println("Get Detail num-------------"+campaignList.size());
-		return null;
+		return campaignList;
 	}
 	//get detail by apply link
 	private static String crawlTaskDetailData(String detailURL){
@@ -138,15 +155,25 @@ public class HuoDongXingCrawler {
 		}
 		return lis;
 	}
-	public static  int judgeDay(int year, int month) {
+	private static  int judgeDay(int year, int month) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_MONTH, 1); // 设置日期
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month - 1);
         return c.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
-	public static void main(String[] args) {
+	public static void externalMethod(){
 		List<String> list=generateTasksURL();
-		crawlTaskData(list);
+		List<Campaign>cList=crawlTaskData(list);
+		if(cList.size()!=0){
+			ICampaignService ics=new CampaignServiceImpl();
+			ics.writeInformationDB(cList);
+		}else{
+			System.out.println("查询不到信息");
+		}
+		
+	}
+	public static void main(String[] args) {
+		externalMethod();
 	}
 }
