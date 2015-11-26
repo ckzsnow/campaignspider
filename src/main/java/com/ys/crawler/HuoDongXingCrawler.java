@@ -19,14 +19,13 @@ import org.springframework.stereotype.Component;
 import com.ys.model.Campaign;
 import com.ys.service.ICampaignService;
 @Component
-public class SimpleClient {
+public class HuoDongXingCrawler {
 	@Autowired
 	private ICampaignService campaignService ;
 	
 	public void parseUri(String date){
 //		 	String url="http://www.huodongxing.com/eventlist?orderby=v&range=1&d=t2&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
-		 	String url="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date=DATE&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
-		 	url.replace("DATE", date);
+		 	String url="http://www.huodongxing.com/eventlist?orderby=r&d=ts&date="+date+"&tag=%E5%88%9B%E4%B8%9A&city=%E4%B8%8A%E6%B5%B7";
 		 	// 设置代理服务器地址和端口        
 	      // 使用 GET 方法 ，如果服务器需要通过 HTTPS 连接，那只需要将下面 URL 中的 http 换成 https   
 		  HttpMethod method=new GetMethod(url);  
@@ -126,18 +125,18 @@ public class SimpleClient {
 	}
 	public static  void getDates(){
 		 
-		   
+		   HuoDongXingCrawler sc=new HuoDongXingCrawler();
 //		   sc.parseUri();
 			SimpleDateFormat df = new SimpleDateFormat("dd ");//设置日期格式
 			SimpleDateFormat year = new SimpleDateFormat("yyyy-MM");
 			String[] dates=year.format(new Date()).split("-");
-			int dayNum=judgeDay(Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
+			int dayNum=sc.judgeDay(Integer.parseInt(dates[0]), Integer.parseInt(dates[1]));
 //			System.out.println(dayNum);
 			int todayNum=Integer.parseInt(df.format(new Date()).trim());
 //			System.out.println(todayNum);
 			for(int i=todayNum;i<=dayNum;i++){
 				System.out.println(Integer.parseInt(dates[0])+"----"+i);
-				this.parseUri(Integer.parseInt(dates[0])+"-"+Integer.parseInt(dates[1])+"-"+i);
+				sc.parseUri(Integer.parseInt(dates[0])+"-"+Integer.parseInt(dates[1])+"-"+i);
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
@@ -147,7 +146,7 @@ public class SimpleClient {
 			}
 			for(int i=1;i<=todayNum;i++){
 				System.out.println(Integer.parseInt(dates[0])+"----------"+(Integer.parseInt(dates[1])+1)+"--"+i);
-				this.parseUri(Integer.parseInt(dates[0])+"-"+(Integer.parseInt(dates[1])+1)+"-"+i);
+				sc.parseUri(Integer.parseInt(dates[0])+"-"+(Integer.parseInt(dates[1])+1)+"-"+i);
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
