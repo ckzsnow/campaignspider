@@ -9,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.ys.crawler.HuoDongBaCrawler;
 import com.ys.crawler.HuoDongXingCrawler;
 import com.ys.utils.CommonUtils;
 
 @Component
 public class CrawlerSchedule {
 
+	@Autowired
+	private HuoDongBaCrawler huoDongBaCrawler;
+	
 	@Autowired
 	private HuoDongXingCrawler huoDongXingCrawler;
 	
@@ -29,13 +33,14 @@ public class CrawlerSchedule {
 		random = new Random();
 	}
 	
-	@Scheduled(fixedDelay= 1000 * 60 * 60 * 2)
+	@Scheduled(fixedDelay= 1000 * 60 * 60 * 4)
 	public void invoiceApprovalNotify() {
 		while(dateList.size() != 0) {
 			int sleepMinute = random.nextInt(5)%(5-3+1) + 3;
 			int dateIndex = random.nextInt(dateList.size() - 1)%(dateList.size());
 			logger.debug("schedule the huoDongXingCrawler, date={}, sleep={}", dateList.get(dateIndex), sleepMinute);
 			huoDongXingCrawler.executeCrawl(dateList.remove(dateIndex));
+			huoDongBaCrawler.executeCrawl(dateList.remove(dateIndex));
 			try {
 				Thread.sleep(sleepMinute * 60 * 1000);
 			} catch (InterruptedException e) {

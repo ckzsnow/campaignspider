@@ -22,10 +22,13 @@ import com.ys.utils.CommonUtils;
 public class HuoDongBaCrawler {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HuoDongBaCrawler.class);
+	
+	public static final String SEED_URL = "http://www.hdb.com/find/shanghai-flu-fy0-pPAGE?start_time=DATE";
+	
 	@Autowired
 	private ICampaignService campaignService ;
 
-	public  List<Campaign> crawlTaskData(String URLs){
+	public  List<Campaign> crawlTaskData(String date){
  		int pageNum=1;
 		int pageNo=1;
 		List<Campaign> campaignList=new ArrayList<>();
@@ -34,7 +37,7 @@ public class HuoDongBaCrawler {
 		while(pageNo<=pageNum){
 			// 使用 GET 方法 ，如果服务器需要通过 HTTPS 连接，那只需要将下面 URL 中的 http 换成 https   
 			  try {
-				String newUrl=URLs.replace("Page",String.valueOf(pageNo));
+				String newUrl=SEED_URL.replace("PAGE",String.valueOf(pageNo)).replace("DATE", date);
 				  HttpMethod method=new GetMethod(newUrl);
 					  client.executeMethod(method);
 				 //打印服务器返回的状态  
@@ -139,8 +142,8 @@ public class HuoDongBaCrawler {
 		return lis;
 	}
 
-	public  void externalMethod(String url){
-		List<Campaign>cList=crawlTaskData(url);
+	public  void executeCrawl(String date){
+		List<Campaign>cList=crawlTaskData(date);
 		if(cList.size()!=0){
 			campaignService.writeInformationDB(cList);
 		}else{
