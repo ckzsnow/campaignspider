@@ -36,7 +36,11 @@ public interface ConstantCode {
 	public static final String USER_MODIFY_PWD_DATABASE_OPERATE_ERROR_ERROR_MSG = "操作数据库失败！";
 	public static final String USER_MODIFY_PWD_SUCCESS_CODE = "003000";
 	public static final String USER_MODIFY_PWD_SUCCESS_MSG = "密码修改成功！";
-	
-	public static final String USER_MODIFY_PWD_DATABASE_SUCCESS_CODE="004001";
-	public static final String USER_MODIFY_PWD_DATABASE_SUCCESS_MSG="操作数据库成功";
+	//campaign service code
+	public static final String CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_CODE="004001";
+	public static final String CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_MSG="待写入数据List为空!";
+	public static final String CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_CODE="004002";
+	public static final String CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_MSG="操作数据库失败，可能部分写入!";
+	public static final String CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_CODE="004000";
+	public static final String CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_MSG="写数据库成功!";
 }

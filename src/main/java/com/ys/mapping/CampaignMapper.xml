@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ys.dao.CampaignMapper" >
   <resultMap id="BaseResultMap" type="com.ys.model.Campaign" >
-    <id column="id" property="id" jdbcType="BIGINT" />
+    <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="act_name" property="actName" jdbcType="VARCHAR" />
     <result column="act_time" property="actTime" jdbcType="VARCHAR" />
     <result column="act_destination" property="actDestination" jdbcType="VARCHAR" />
@@ -24,17 +24,17 @@
   <sql id="Blob_Column_List" >
     act_details
   </sql>
-  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     from campaigns
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from campaigns
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.ys.model.Campaign" >
     insert into campaigns (id, act_name, act_time, 
@@ -42,7 +42,7 @@
       act_snapshot, act_originator, act_originator_image, 
       act_enroll, create_time, act_details
       )
-    values (#{id,jdbcType=BIGINT}, #{actName,jdbcType=VARCHAR}, #{actTime,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{actName,jdbcType=VARCHAR}, #{actTime,jdbcType=VARCHAR}, 
       #{actDestination,jdbcType=VARCHAR}, #{actEnrollSum,jdbcType=INTEGER}, #{actInterestSum,jdbcType=INTEGER}, 
       #{actSnapshot,jdbcType=VARCHAR}, #{actOriginator,jdbcType=VARCHAR}, #{actOriginatorImage,jdbcType=VARCHAR}, 
       #{actEnroll,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{actDetails,jdbcType=LONGVARCHAR}
@@ -90,7 +90,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=BIGINT},
+        #{id,jdbcType=VARCHAR},
       </if>
       <if test="actName != null" >
         #{actName,jdbcType=VARCHAR},
@@ -164,7 +164,7 @@
         act_details = #{actDetails,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ys.model.Campaign" >
     update campaigns
@@ -179,7 +179,7 @@
       act_enroll = #{actEnroll,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       act_details = #{actDetails,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ys.model.Campaign" >
     update campaigns
@@ -193,6 +193,6 @@
       act_originator_image = #{actOriginatorImage,jdbcType=VARCHAR},
       act_enroll = #{actEnroll,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

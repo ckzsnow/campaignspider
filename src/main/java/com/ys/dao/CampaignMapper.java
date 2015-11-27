@@ -3,13 +3,13 @@ package com.ys.dao;
 import com.ys.model.Campaign;
 
 public interface CampaignMapper {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String id);
 
     int insert(Campaign record);
 
     int insertSelective(Campaign record);
 
-    Campaign selectByPrimaryKey(Long id);
+    Campaign selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(Campaign record);
 

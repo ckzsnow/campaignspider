@@ -1,23 +1,19 @@
 package com.ys.service.impl;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ys.constant.ConstantCode;
 import com.ys.dao.UserMapper;
-import com.ys.model.Campaign;
 import com.ys.model.User;
 import com.ys.service.IUserService;
-import com.ys.utils.GenerateMD5;
+import com.ys.utils.CommonUtils;
 
 @Service("userService")
 public class UserServiceImpl implements IUserService {
-	
 
 	@Autowired
 	private UserMapper userMapper;
@@ -36,12 +32,7 @@ public class UserServiceImpl implements IUserService {
 			retMap.put(ConstantCode.ERROR_MSG, ConstantCode.USER_LOGIN_ID_NOT_EXISTED_ERROR_MSG);
 			return retMap;
 		}
-		String encryptPwd;
-		try {
-			encryptPwd = GenerateMD5.generateMD5(userPwd);
-		} catch (NoSuchAlgorithmException e) {
-			encryptPwd = userPwd;
-		}
+		String encryptPwd = CommonUtils.generateMD5(userPwd);
 		if (!encryptPwd.equals(user.getUserPwd())) {
 			retMap.put(ConstantCode.ERROR_CODE, ConstantCode.USER_LOGIN_PWD_WRONG_ERROR_CODE);
 			retMap.put(ConstantCode.ERROR_MSG, ConstantCode.USER_LOGIN_PWD_WRONG_ERROR_MSG);
@@ -66,12 +57,7 @@ public class UserServiceImpl implements IUserService {
 			retMap.put(ConstantCode.ERROR_MSG, ConstantCode.USER_REGISTER_ID_EXISTED_ERROR_MSG);
 			return retMap;
 		}
-		String encryptPwd;
-		try {
-			encryptPwd = GenerateMD5.generateMD5(userPwd);
-		} catch (NoSuchAlgorithmException e) {
-			encryptPwd = userPwd;
-		}
+		String encryptPwd = CommonUtils.generateMD5(userPwd);
 		user = new User();
 		user.setUserId(userId);
 		user.setUserPwd(encryptPwd);
@@ -99,24 +85,14 @@ public class UserServiceImpl implements IUserService {
 			retMap.put(ConstantCode.ERROR_CODE, ConstantCode.USER_MODIFY_PWD_ID_NOT_EXISTED_ERROR_CODE);
 			retMap.put(ConstantCode.ERROR_MSG, ConstantCode.USER_MODIFY_PWD_ID_NOT_EXISTED_ERROR_MSG);
 			return retMap;
-		}
-		String oldEncryptPwd;
-		String newEncryptPwd;
-		try {
-			oldEncryptPwd = GenerateMD5.generateMD5(userOldPwd);
-		} catch (NoSuchAlgorithmException e) {
-			oldEncryptPwd = userOldPwd;
-		}
+		}		
+		String oldEncryptPwd = CommonUtils.generateMD5(userOldPwd);
 		if (!oldEncryptPwd.equals(user.getUserPwd())) {
 			retMap.put(ConstantCode.ERROR_CODE, ConstantCode.USER_MODIFY_PWD_OLD_PWD_WRONG_ERROR_CODE);
 			retMap.put(ConstantCode.ERROR_MSG, ConstantCode.USER_MODIFY_PWD_OLD_PWD_WRONG_ERROR_MSG);
 			return retMap;
 		}
-		try {
-			newEncryptPwd = GenerateMD5.generateMD5(userNewPwd);
-		} catch (NoSuchAlgorithmException e) {
-			newEncryptPwd = userNewPwd;
-		}
+		String newEncryptPwd = CommonUtils.generateMD5(userNewPwd);
 		user.setUserPwd(newEncryptPwd);
 		if (userMapper.updateUserPwd(user) != 0) {
 			retMap.put(ConstantCode.ERROR_CODE, ConstantCode.USER_MODIFY_PWD_SUCCESS_CODE);
@@ -127,6 +103,4 @@ public class UserServiceImpl implements IUserService {
 		}
 		return retMap;
 	}
-
-	
 }

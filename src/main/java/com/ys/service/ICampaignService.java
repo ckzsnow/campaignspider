@@ -8,4 +8,7 @@ import com.ys.model.Campaign;
 public interface ICampaignService {
 
 	public Map<String,String> writeInformationDB(List<Campaign> list);
+	
+	public List<Campaign> getCampaign(int page, int amountPerPage);
+	
 }

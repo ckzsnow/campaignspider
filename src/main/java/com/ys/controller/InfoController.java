@@ -28,7 +28,7 @@ public class InfoController {
 	@ResponseBody
 	public List<Map<String, String>> getCampaignData(HttpServletRequest request) {
 		String currentPage = request.getParameter("currentPage");
-		String numPerPage = request.getParameter("numPerPage");
+		String amountPerPage = request.getParameter("amountPerPage");
 		return null;
 	}
 }
