@@ -57,9 +57,8 @@ public class HuoDongBaCrawler {
 					System.out.println("-------------------------------------");
 					Campaign campaign=new Campaign();
 					//背景图片
-					String img1=liNum.get(j).select("a img[src] ").first().toString();
-					String img2=img1.substring(img1.indexOf("data-src=\"")+10,img1.lastIndexOf("\" src="));
-					 campaign.setActSnapshot(img2);
+					String img1=liNum.get(j).select("a img[src] ").attr("data-src");
+					 campaign.setActSnapshot(img1);
 					//标题
 					String newtitle =liNum.get(j).select("div[class=find_main_div] div[class=find_main_title] >a ").text(); 
 					campaign.setActName(newtitle);
@@ -67,10 +66,8 @@ public class HuoDongBaCrawler {
 					String author = liNum.get(j).select("div[class=find_main_b] div[class=find_main_b_l] > a ").text();
 					campaign.setActOriginator(author);
 					//作者 头像
-					String authorimg = liNum.get(j).select("div[class=find_main_b] div[class=find_main_b_l] >a img[src]").toString();
-					String authorImgString=
-							authorimg.substring(authorimg.indexOf("src=\"")+5,authorimg.lastIndexOf("g")+1);
-					 campaign.setActOriginatorImage(authorImgString);
+					String authorimg = liNum.get(j).select("div[class=find_main_b] div[class=find_main_b_l] >a img[src]").attr("src");
+					campaign.setActOriginatorImage(authorimg);
 					 //Time
 					String time = liNum.get(j).select("div[class=find_main_div] div[class=find_main_fixH] div[class=find_main_time]").text(); 
 					campaign.setActTime(time);
