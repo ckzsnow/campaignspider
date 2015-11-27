@@ -41,4 +41,10 @@ public class CampaignServiceImpl implements ICampaignService {
 		return retMap;
 	}
 
+	@Override
+	public List<Campaign> getCampaign(int page, int amountPerPage) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
