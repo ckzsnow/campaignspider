@@ -17,7 +17,6 @@ public class CampaignServiceImpl implements ICampaignService {
 	  private	CampaignMapper campaignMapper;
 	@Override
 	public Map<String, String> writeInformationDB(List<Campaign> list) {
-		String resource = "CampaignMapper.xml";
 		Map<String, String> retMap = new HashMap<>();
 		for(int i=0;i<list.size();i++){
 			int affectedRows=campaignMapper.insert(list.get(i));

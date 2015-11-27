@@ -25,7 +25,7 @@ public class HuoDongXingCrawler {
 	@Autowired
 	private ICampaignService campaignService ;
 	
-	private static List<String> generateTasksURL(){
+	public static List<String> generateTasksURL(){
 		List<String>list=new ArrayList<String>();
 		//设置日期格式
 		SimpleDateFormat day = new SimpleDateFormat("dd ");
@@ -51,10 +51,10 @@ public class HuoDongXingCrawler {
 		}
 		return list;
 	}
-	private static List<Campaign> crawlTaskData(List<String> list){
+	public static List<Campaign> crawlTaskData(List<String> list){
 		int pageNum=1;
 		List<Campaign> campaignList=new ArrayList<>();
-		Campaign campaign=new Campaign();
+		
 		HttpClient client = new HttpClient(); 
 		Document doc = null;
 		boolean bodyIsNull=true;
@@ -82,6 +82,7 @@ public class HuoDongXingCrawler {
 			    Elements lis=doc.select("[class=event-horizontal-list-new] >li");
 
 				for(int j=0;j<lis.size();j++){
+					Campaign campaign=new Campaign();
 					//背景图片
 					Element bgimg = lis.get(j).select(" a img[src]").first();  
 					String imgString=bgimg.toString().substring(10,bgimg.toString().length()-9);
@@ -136,7 +137,7 @@ public class HuoDongXingCrawler {
 		return campaignList;
 	}
 	//get detail by apply link
-	private static String crawlTaskDetailData(String detailURL){
+	public static String crawlTaskDetailData(String detailURL){
 		HttpMethod method=new GetMethod(detailURL); 
 		HttpClient client = new HttpClient(); 
 		Document doc = null;
