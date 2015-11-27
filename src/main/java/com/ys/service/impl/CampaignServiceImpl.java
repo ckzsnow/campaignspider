@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ys.constant.ConstantCode;
 import com.ys.dao.CampaignMapper;
+import com.ys.interceptor.Page;
 import com.ys.model.Campaign;
 import com.ys.service.ICampaignService;
 
@@ -39,6 +40,22 @@ public class CampaignServiceImpl implements ICampaignService {
 					ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_MSG);
 		}
 		return retMap;
+	}
+
+	@Override
+	public List<Campaign> getCampaign(String currentPage, String amountPerPage) {
+		Page<Campaign> page = new Page<>();
+		int currentPage_ = 1;
+		int amountPerPage_ = 5;
+		try {
+			currentPage_ = Integer.valueOf(currentPage);
+			amountPerPage_ =Integer.valueOf(amountPerPage);
+		} catch(NumberFormatException e) {
+			//ignore
+		}
+		page.setPageNo(currentPage_);
+		page.setPageSize(amountPerPage_);
+		return campaignMapper.selectByPage(page);
 	}
 
 }

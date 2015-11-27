@@ -67,13 +67,14 @@
 		<property name="password" value="cft67YGV"></property>
 		<property name="maxIdle" value="30"></property>
 		<property name="defaultAutoCommit" value="true"></property>
-	</bean>	
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath:com/ys/mapping/*.xml" />
+        <property name="plugins">  
+	        <bean class="com.ys.interceptor.MybatisSpringPageInterceptor">  
+	        </bean>  
+	    </property>  
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.ys.dao" />
@@ -89,6 +90,7 @@
 	<context:component-scan base-package="com.ys.controller" />
 	<context:component-scan base-package="com.ys.service.impl" />
 	<context:component-scan base-package="com.ys.crawler" />
+	<context:component-scan base-package="com.ys.schedule" />
 	<!-- user component-scan end-->
 	
 </beans>

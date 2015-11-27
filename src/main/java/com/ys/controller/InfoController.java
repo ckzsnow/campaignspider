@@ -6,14 +6,20 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ys.constant.ConstantCode;
+import com.ys.model.Campaign;
+import com.ys.service.ICampaignService;
 
 @Controller
 public class InfoController {
+	
+	@Autowired
+	private ICampaignService campaignService;
 	
 	@RequestMapping("/admin/getUserId")
 	@ResponseBody
@@ -26,9 +32,10 @@ public class InfoController {
 	
 	@RequestMapping("/admin/getCampaignData")
 	@ResponseBody
-	public List<Map<String, String>> getCampaignData(HttpServletRequest request) {
+	public List<Campaign> getCampaignData(HttpServletRequest request) {
 		String currentPage = request.getParameter("currentPage");
 		String amountPerPage = request.getParameter("amountPerPage");
-		return null;
+		List<Campaign> retList = campaignService.getCampaign(currentPage, amountPerPage);
+		return retList;
 	}
 }

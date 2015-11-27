@@ -15,7 +15,7 @@ public class HuoDongXingCrawlerTest {
 	
 	@Test
 	public void test() {
-		hdxc.executeCrawl("2015-12-05");
+		hdxc.executeCrawl("2015-12-01");
 	}
 
 }

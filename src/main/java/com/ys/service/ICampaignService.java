@@ -9,6 +9,6 @@ public interface ICampaignService {
 
 	public Map<String,String> writeInformationDB(List<Campaign> list);
 	
-	public List<Campaign> getCampaign(int page, int amountPerPage);
+	public List<Campaign> getCampaign(String page, String amountPerPage);
 	
 }

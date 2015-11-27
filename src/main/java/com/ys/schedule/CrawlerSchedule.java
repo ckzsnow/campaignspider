@@ -31,15 +31,18 @@ public class CrawlerSchedule {
 	
 	@Scheduled(fixedDelay= 1000 * 60 * 60 * 2)
 	public void invoiceApprovalNotify() {
-		if(dateList.size() == 0) dateList = CommonUtils.generateDateList(30);
-		int sleepMinute = random.nextInt(5)%(5-3+1) + 3;
-		int dateIndex = random.nextInt(dateList.size() - 1)%(dateList.size());
-		huoDongXingCrawler.executeCrawl(dateList.remove(dateIndex));
-		try {
-			Thread.sleep(sleepMinute * 60 * 6000);
-		} catch (InterruptedException e) {
-			logger.debug(e.toString());
+		while(dateList.size() != 0) {
+			int sleepMinute = random.nextInt(5)%(5-3+1) + 3;
+			int dateIndex = random.nextInt(dateList.size() - 1)%(dateList.size());
+			logger.debug("schedule the huoDongXingCrawler, date={}, sleep={}", dateList.get(dateIndex), sleepMinute);
+			huoDongXingCrawler.executeCrawl(dateList.remove(dateIndex));
+			try {
+				Thread.sleep(sleepMinute * 60 * 1000);
+			} catch (InterruptedException e) {
+				logger.debug(e.toString());
+			}
 		}
+		dateList = CommonUtils.generateDateList(30);
 	}
 	
 }

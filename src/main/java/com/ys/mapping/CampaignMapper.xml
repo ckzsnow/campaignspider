@@ -32,6 +32,13 @@
     from campaigns
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectByPage" resultMap="ResultMapWithBLOBs" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from campaigns order by act_time desc
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from campaigns
     where id = #{id,jdbcType=VARCHAR}

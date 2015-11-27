@@ -1,5 +1,8 @@
 package com.ys.dao;
 
+import java.util.List;
+
+import com.ys.interceptor.Page;
 import com.ys.model.Campaign;
 
 public interface CampaignMapper {
@@ -10,6 +13,8 @@ public interface CampaignMapper {
     int insertSelective(Campaign record);
 
     Campaign selectByPrimaryKey(String id);
+    
+    List<Campaign> selectByPage(Page<Campaign> page);
 
     int updateByPrimaryKeySelective(Campaign record);
 
