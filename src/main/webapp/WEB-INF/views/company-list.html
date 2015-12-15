@@ -39,8 +39,27 @@
 <title>帮帮账-八爪鱼</title>
 </head>
 <body>
-<div id="retList"></div>
-<div class="act_container" id="pageNav" style="display:none;">
+<table class="table table-border table-bordered table-hover table-bg table-sort" style="width:auto;min-width:1200px;margin-left:20px;margin-right:20px;margin-top:20px;">
+    <thead>
+      <tr class="text-c">
+      	<th style="word-break:keep-all;white-space:nowrap;">成立日期</th>
+        <th style="word-break:keep-all;white-space:nowrap;">企业名称</th>
+        <th style="word-break:keep-all;white-space:nowrap;">企业法人</th>
+        <th style="word-break:keep-all;white-space:nowrap;">注册号</th>
+        <th style="word-break:keep-all;white-space:nowrap;">企业地址</th>
+        <th style="word-break:keep-all;white-space:nowrap;">注册资本</th>
+        <th style="word-break:keep-all;white-space:nowrap;">企业状态</th>
+        <th style="word-break:keep-all;white-space:nowrap;">公司类型</th>
+        <th style="word-break:keep-all;white-space:nowrap;">营业期限</th>
+        <th style="word-break:keep-all;white-space:nowrap;">登记机关</th>
+        <th style="word-break:keep-all;white-space:nowrap;">受理机关</th>
+        <th style="word-break:keep-all;white-space:nowrap;">经营范围</th>
+      </tr>
+    </thead>
+    <tbody id="retList">
+    </tbody>
+  </table>
+<div id="pageNav" style="display:none;margin-top:20px;">
     <div style="float:left;">
     	<button id="preButton" class="btn btn-success radius">上一页</button>
     </div>
@@ -79,7 +98,7 @@ function getData() {
 				container.innerHTML = "";
 				var list = "";
 				for(var o in data) {
-					list = list + "<div class='act_container with_border'><div><div style='float:right;width:530px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><h4>"+data[o].cName+"</h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].registerNo+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].representativeName+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].companyLocation+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].registerMoney+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].state+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].companyType+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].buildDate+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].deadline+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].registerLocation+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].acceptLocation+"</div></h4><div style='margin-left:10px;margin-top:5px;'>"+data[o].operateScope+"</div></div></div></div>";
+					list = list + "<tr class='text-c'><td>"+data[o].buildDate+"</td><td>"+data[o].cName+"</td><td>"+data[o].representativeName+"</td><td>"+data[o].registerNo+"</td><td>"+data[o].companyLocation+"</td><td>"+data[o].registerMoney+"</td><td>"+data[o].state+"</td><td>"+data[o].companyType+"</td><td>"+data[o].deadline+"</td><td>"+data[o].registerLocation+"</td><td>"+data[o].acceptLocation+"</td><td class='text-l'>"+data[o].operateScope+"</td></tr>";
 				}
 				container.innerHTML = list;
 				document.getElementById('pageNav').style.display = "";
