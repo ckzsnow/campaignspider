@@ -30,6 +30,7 @@ public class HuoDongXingCrawler {
 	@Autowired
 	private ICampaignService campaignService;
 
+	
 	private HttpClient httpClient = new HttpClient();
 
 	public void executeCrawl(String date) {

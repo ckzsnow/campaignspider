@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ys.dao.CompanyMapper" >
+  <resultMap id="BaseResultMap" type="com.ys.model.Company" >
+    <id column="register_no" property="registerNo" jdbcType="INTEGER" />
+    <result column="c_name" property="cName" jdbcType="VARCHAR" />
+    <result column="representative_name" property="representativeName" jdbcType="VARCHAR" />
+    <result column="company_location" property="companyLocation" jdbcType="VARCHAR" />
+    <result column="register_money" property="registerMoney" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="company_type" property="companyType" jdbcType="VARCHAR" />
+    <result column="build_date" property="buildDate" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+    <result column="register_location" property="registerLocation" jdbcType="VARCHAR" />
+    <result column="accept_location" property="acceptLocation" jdbcType="VARCHAR" />
+      <result column="operate_scope" property="operateScope" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" > 
+   register_no, c_name, representative_name, company_location, register_money, state, company_type, 
+    build_date, deadline, register_location, accept_location,operate_scope
+  </sql>
+   <sql id="Blob_Column_List" >
+    register_no
+  </sql>
+  
+  <select id="selectByPage" resultMap="BaseResultMap"  parameterType="map" >
+    select *
+    from company order by build_date desc
+  </select>
+ 
+  <insert id="insert" parameterType="com.ys.model.Company" >
+    insert into company (register_no, c_name, representative_name, 
+      company_location, register_money, state, 
+      company_type, build_date, deadline, register_location,
+      accept_location,operate_scope
+      )
+    values (#{registerNo,jdbcType=INTEGER}, #{cName,jdbcType=VARCHAR}, #{representativeName,jdbcType=VARCHAR}, 
+      #{companyLocation,jdbcType=VARCHAR}, #{registerMoney,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{companyType,jdbcType=VARCHAR}, 
+      #{buildDate,jdbcType=VARCHAR}, #{deadline,jdbcType=VARCHAR}, #{registerLocation,jdbcType=VARCHAR}, 
+      #{acceptLocation,jdbcType=VARCHAR}, #{operateScope,jdbcType=VARCHAR}
+      )
+  </insert>
+
+</mapper>
