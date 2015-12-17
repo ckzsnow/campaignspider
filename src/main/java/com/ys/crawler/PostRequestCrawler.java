@@ -32,22 +32,20 @@ public class PostRequestCrawler {
 	private ICompanyService companyService ;
 	
 	
-	public List<Company> entranceMethod(){
+	public void entranceMethod(){
+		Map<String, String> retMap =new HashMap<>();
 		List<Company> retList = new ArrayList<>();
 		List<String> conditionsList = new ArrayList<>();
 		List<Company> companyList = new ArrayList<>();
 		try {
 			conditionsList = readFileByCharteArray();
+			for(String s:conditionsList){
+				 mainTest(s);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(String s:conditionsList){
-			companyList = mainTest(s);
-			for(int i =0;i<companyList.size();i++){
-				retList.add(companyList.get(i));
-			}
-		}
-		return retList;
+		
 	}
 	
 	
@@ -65,13 +63,14 @@ public  List<String> readFileByCharteArray() throws IOException {
 				list.add(str);
 			}
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}
 	
 		br.close();
 		return list;
 		}
-	public  List<Company> mainTest(String conditions) {
+	public Map<String, String> mainTest(String conditions) {
+		Map<String, String> retMap =new HashMap<>();
 		List<Company> list =new ArrayList<>();
 		Company company = new Company();
 		
@@ -79,6 +78,9 @@ public  List<String> readFileByCharteArray() throws IOException {
 		//set postRequest body info
 		NameValuePair[] data = { new NameValuePair("searchType", "1"), new NameValuePair("keyWords", "上海"+conditions) };
 		String nums = getPageNums(url,data);
+		if(nums == null || nums.isEmpty()){
+			return null;
+		}
 		for(int i = 1; i<= Integer.parseInt(nums); i++ ) {
 			List<Map<String, String>> tableList = new ArrayList<>();
 			List<String> idList = new ArrayList<>();
@@ -94,6 +96,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 							 for(int x = 0;x<idList.size(); x++){
 								 responseBody	  =  getCompanyDetails("http://www.sgs.gov.cn/lz/etpsInfo.do?method=viewDetail",idList.get(x));  
 								 company =  getCompanyDetail(responseBody);
+								 retMap =  companyService.writeInformationDB(company);
 									list.add(company); 
 							 }
 						  }
@@ -103,7 +106,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 				  }
 			 }
 		}
-		return list;
+		return retMap;
 	}
 	// parse return bodyDetails
 	public  Company getCompanyDetail(String responseBody){
@@ -111,28 +114,117 @@ public  List<String> readFileByCharteArray() throws IOException {
 		Document doc = Jsoup.parse(responseBody);
 		Elements tablesElements=doc.select("table[class = list_boder] > tbody > tr");
 		int i=1;
+		try{
+			
+		
 			for(Element elements:tablesElements) {
 				if(i == 1){
 					company.setcName(elements.select("td[class=list_td_1]").first().text());
 					company.setRegisterNo(Long.parseLong(elements.select("td[class=list_td_1]").last().text()));
 				}else if(i == 2){
-					company.setRepresentativeName(elements.select("td[class=list_td_1]").first().text());
-					company.setCompanyLocation(elements.select("td[class=list_td_1]").last().text());
+					if( (elements.select("td[class=list_title_boeder]").first().text()) .indexOf("法定代表人姓名") !=-1){
+						if( (elements.select("td[class=list_td_1]").first().text()) == null  ){
+							company.setRepresentativeName("");
+						}else{
+							company.setRepresentativeName(elements.select("td[class=list_td_1]").first().text());
+						}
+					}else{
+						company.setRepresentativeName("");
+					}
+					
+					
+					if(  (elements.select("td[class=list_title_boeder]").last().text()) .indexOf("住所") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").last().text()) == null){
+							company.setCompanyLocation("");
+						}else{
+							company.setCompanyLocation(elements.select("td[class=list_td_1]").last().text());
+						}
+					}else{
+						company.setCompanyLocation("");
+					}
 				}else if(i == 3){
-					company.setRegisterMoney(elements.select("td[class=list_td_1]").text());
+					if( (elements.select("td[class=list_title_boeder]").first().text()) .indexOf("注册资本") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").text()) == null){
+							company.setRegisterMoney("");
+						}else{
+							company.setRegisterMoney(elements.select("td[class=list_td_1]").text());
+						}
+					}else{
+						company.setRegisterMoney("");
+					}
 				}	else if(i == 4){
-					company.setState(elements.select("td[class=list_td_1]").first().text());
-					company.setCompanyType(elements.select("td[class=list_td_1]").last().text());
+					if( (elements.select("td[class=list_title_boeder]").first().text()) .indexOf("企业状态") !=-1  ){
+						if( (elements.select("td[class=list_td_1]").first().text()) == null ){
+							company.setState("");
+						}else{
+							company.setState(elements.select("td[class=list_td_1]").first().text());
+						}
+					}else{
+						company.setState("");
+					}
+					if( (elements.select("td[class=list_title_boeder]").last().text()) .indexOf("公司类型") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").last().text()) ==null ){
+							company.setCompanyType("");
+						}else{
+							company.setCompanyType(elements.select("td[class=list_td_1]").last().text());
+						}
+					}else{
+						company.setCompanyType("");
+					}
 				}	else if(i == 5){
-					company.setBuildDate(elements.select("td[class=list_td_1]").first().text());
-					company.setDeadline(elements.select("td[class=list_td_1]").last().text());
+					if(  (elements.select("td[class=list_title_boeder]").first().text()) .indexOf("成立日期") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").first().text()) == null ){
+							company.setBuildDate("");
+						}else {
+							company.setBuildDate(elements.select("td[class=list_td_1]").first().text());
+						}
+					}else{
+						company.setBuildDate("");
+					}
+					if( (elements.select("td[class=list_title_boeder]").last().text()) .indexOf("营业期限") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").last().text()) == null ){
+							company.setDeadline("");
+						}else {
+							company.setDeadline(elements.select("td[class=list_td_1]").last().text());
+						}
+					}else{
+						company.setDeadline("");
+					}
 				}	else if(i == 6){
-					company.setRegisterLocation(elements.select("td[class=list_td_1]").first().text());
-					company.setAcceptLocation(elements.select("td[class=list_td_1]").last().text());
+					if( (elements.select("td[class=list_title_boeder]").first().text()) .indexOf("登记机关") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").first().text()) == null ){
+							company.setRegisterLocation("");
+						} else {
+							company.setRegisterLocation(elements.select("td[class=list_td_1]").first().text());
+						}
+					}else{
+						company.setRegisterLocation("");
+					}
+					if(  (elements.select("td[class=list_title_boeder]").last().text()) .indexOf("受理机关") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").last().text()) ==null ){
+							company.setAcceptLocation("");
+						} else {
+							company.setAcceptLocation(elements.select("td[class=list_td_1]").last().text());
+						}
+					}else{
+						company.setAcceptLocation("");
+					}
 				}	else if(i == 7){
-					company.setOperateScope(elements.select("td[class=list_td_1]").text());
+					if(  (elements.select("td[class=list_title_boeder]").first().text()) .indexOf("经营范围:") !=-1 ){
+						if( (elements.select("td[class=list_td_1]").text()) == null ) {
+							company.setOperateScope("");
+						} else {
+							company.setOperateScope(elements.select("td[class=list_td_1]").text());
+						}
+					}else{
+						company.setOperateScope("");
+					}
+					
 				}	
 				i++;
+		}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		return company;
 		
@@ -149,7 +241,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 		postMethod.setRequestBody(data);
 		 try {
 			 httpClient.executeMethod(postMethod);
-			 response =  new String(postMethod.getResponseBodyAsString().getBytes("GB2312"));
+			 response =  new String(postMethod.getResponseBodyAsString().getBytes("GBK"));
 		        System.out.println("~~~"+response);
 		 }catch(Exception e){
 			 e.printStackTrace();
@@ -163,7 +255,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 		      for (String k : m.keySet() ) {  
 		        System.out.println(k + " : " + m.get(k)+"-------"+m.get(k).substring(8, 16)); 
 		        System.out.println(m.get(k).substring(8, 16));
-		        if(Integer.parseInt(m.get(k).substring(8, 16)) < 20140101 ){
+		        if(Integer.parseInt(m.get(k).substring(8, 16)) < 20150801 ){
 		        	save.add(m);
 		        }
 		      }  
@@ -205,7 +297,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 			//add postMethod to httpClient
 			httpClient.executeMethod(postMethod);
 			//Returns the response body of the HTTP method to byte[]
-			String response =  new String(postMethod.getResponseBodyAsString().getBytes("GB2312"));
+			String response =  new String(postMethod.getResponseBodyAsString().getBytes("GBK"));
 			System.out.println(response);
 			//check return response body whether hava null or hava details
 			 if(response.indexOf("未找到符合")==-1){
@@ -250,11 +342,13 @@ public  List<String> readFileByCharteArray() throws IOException {
 		}
 	}
 	public  void executeCrawl(){
-		List<Company> companyList=entranceMethod();
-		if(companyList.size()!=0){
-			companyService.writeInformationDB(companyList);
-		}else{
-			System.out.println("查询不到信息");
+		try{
+			this.entranceMethod();
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("查询异常");
 		}
+		
 	}
+	
 }

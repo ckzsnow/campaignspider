@@ -18,17 +18,20 @@ public class CompanyServiceImpl implements ICompanyService {
 	@Autowired
 	private CompanyMapper companyMapper;
 	@Override
-	public Map<String, String> writeInformationDB(List<Company> companyList) {
+	public Map<String, String> writeInformationDB(Company company) {
 		Map<String, String> retMap = new HashMap<>();
 		boolean writeSuccess = true;
-		if(companyList == null || companyList.size() == 0) {
+		if(company == null ) {
 			retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_CODE,
 					ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_MSG);
 			return retMap;
 		}
-		for (Company company : companyList) {
+		try{
 			if(companyMapper.insert(company) == 0) writeSuccess = false;
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+			
 		if(writeSuccess) {
 			retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_CODE,
 					ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_MSG);

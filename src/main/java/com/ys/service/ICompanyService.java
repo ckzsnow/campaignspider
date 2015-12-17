@@ -9,7 +9,7 @@ import com.ys.model.Company;
 
 public interface ICompanyService {
 
-	public Map<String,String> writeInformationDB(List<Company> list);
+	public Map<String,String> writeInformationDB(Company company);
 	
 	List<Company> getCompany(String page, String amountPerPage);
 }

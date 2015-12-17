@@ -16,11 +16,11 @@ public class ReadTxtFile {
 
 
 	public static void main(String[] args) {
-		String readFilePath = System.getProperty("user.dir") + File.separator + "writerCharacters.txt";
-//		String writerFilePath = System.getProperty("user.dir") + File.separator + "writerCharacters.txt";
+		String readFilePath = System.getProperty("user.dir") + File.separator + "read.txt";
+		String writerFilePath = System.getProperty("user.dir") + File.separator + "write.txt";
 		try {
 			readFileByCharteArray(readFilePath);
-//			writeFile(writerFilePath);
+			writeFile(writerFilePath);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -32,25 +32,19 @@ public class ReadTxtFile {
 		StringBuffer buf = new StringBuffer();
 		PostTest pt=new PostTest();
 		while((str=br.readLine())!=null){
-			Thread thread =new Thread();
 		buf.append(str);
 		buf.append("\r\n");
-		pt.postRequest(str);
-		try {
-			thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 		}
 		String buffString=buf.toString();
 		char[] buffChars = buffString.toCharArray();
 		
-//		for(int i=0;i<buffString.length();i++){
-////			characterslist.add(String.valueOf(buffChars[i]));
-//		}
-//		System.out.println(characterslist.size());
-//
-//		br.close();
+		for(int i=0;i<buffString.length();i++){
+			characterslist.add(String.valueOf(buffChars[i]));
+		}
+		System.out.println(characterslist.size());
+
+		br.close();
 		}
 	public static void writeFile(String path){
 		File file =new File(path);
