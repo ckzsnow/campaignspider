@@ -52,7 +52,9 @@ public class CrawlerSchedule {
 			}
 		}
 		dateList = CommonUtils.generateDateList(30);
-//		postRequestCrawler.executeCrawl();
 	}
-	
+	@Scheduled(fixedDelay= 1000 * 60 * 60 * 24 *40)
+	public void campaignspiCompany() {
+		postRequestCrawler.executeCrawl();
+	}
 }

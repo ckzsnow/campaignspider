@@ -19,6 +19,7 @@ public class CompanyServiceImpl implements ICompanyService {
 	private CompanyMapper companyMapper;
 	@Override
 	public Map<String, String> writeInformationDB(Company company) {
+		System.out.println("进来了");
 		Map<String, String> retMap = new HashMap<>();
 		boolean writeSuccess = true;
 		if(company == null ) {
