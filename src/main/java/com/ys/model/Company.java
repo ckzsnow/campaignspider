@@ -145,6 +145,16 @@ public class Company {
 	public void setOperateScope(String operateScope) {
 		this.operateScope = operateScope;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Company [cName=" + cName + ", registerNo=" + registerNo + ", representativeName=" + representativeName
+				+ ", companyLocation=" + companyLocation + ", registerMoney=" + registerMoney + ", state=" + state
+				+ ", companyType=" + companyType + ", buildDate=" + buildDate + ", deadline=" + deadline
+				+ ", registerLocation=" + registerLocation + ", acceptLocation=" + acceptLocation + ", operateScope="
+				+ operateScope + "]";
+	}
 	
 	
 	

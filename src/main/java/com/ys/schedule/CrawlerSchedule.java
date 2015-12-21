@@ -39,22 +39,23 @@ public class CrawlerSchedule {
 	
 	@Scheduled(fixedDelay= 1000 * 60 * 60 * 4)
 	public void invoiceApprovalNotify() {
-		while(dateList.size() != 0) {
-			int sleepMinute = random.nextInt(5)%(5-3+1) + 3;
-			int dateIndex = random.nextInt(dateList.size() - 1)%(dateList.size());
-			logger.debug("schedule the huoDongXingCrawler, date={}, sleep={}", dateList.get(dateIndex), sleepMinute);
-			huoDongXingCrawler.executeCrawl(dateList.remove(dateIndex));
-			huoDongBaCrawler.executeCrawl(dateList.remove(dateIndex));
-			try {
-				Thread.sleep(sleepMinute * 60 * 1000);
-			} catch (InterruptedException e) {
-				logger.debug(e.toString());
-			}
-		}
-		dateList = CommonUtils.generateDateList(30);
-	}
-	@Scheduled(fixedDelay= 1000 * 60 * 60 * 24 *40)
-	public void campaignspiCompany() {
+//		while(dateList.size() != 0) {
+//			int sleepMinute = random.nextInt(5)%(5-3+1) + 3;
+//			int dateIndex = random.nextInt(dateList.size() - 1)%(dateList.size());
+//			logger.debug("schedule the huoDongXingCrawler, date={}, sleep={}", dateList.get(dateIndex), sleepMinute);
+//			huoDongXingCrawler.executeCrawl(dateList.remove(dateIndex));
+//			huoDongBaCrawler.executeCrawl(dateList.remove(dateIndex));
+//			try {
+//				Thread.sleep(sleepMinute * 60 * 1000);
+//			} catch (InterruptedException e) {
+//				logger.debug(e.toString());
+//			}
+//		}
+//		dateList = CommonUtils.generateDateList(30);
 		postRequestCrawler.executeCrawl();
 	}
+//	@Scheduled(fixedDelay= 1000 * 60 * 60 * 24 *40*3)
+//	public void campaignspiCompany() {
+//		postRequestCrawler.executeCrawl();
+//	}
 }

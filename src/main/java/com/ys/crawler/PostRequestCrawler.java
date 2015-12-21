@@ -1,9 +1,7 @@
 package com.ys.crawler;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -20,14 +18,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ys.model.Campaign;
 import com.ys.model.Company;
 import com.ys.service.ICompanyService;
 @Component
 public class PostRequestCrawler {
+	
+	private static final Logger logger = LoggerFactory.getLogger(PostRequestCrawler.class);
 	@Autowired
 	private ICompanyService companyService ;
 		public static void main(String[] args) {
@@ -37,11 +38,14 @@ public class PostRequestCrawler {
 		}
 	
 	public void entranceMethod(){
+		int i=1;
 		List<String> conditionsList = new ArrayList<>();
 		try {
 			conditionsList = readFileByCharteArray();
 			for(String s:conditionsList){
+				logger.debug("line nums is : {}, keywords:{}",i,s);
 				 mainTest(s);
+				 i++;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,6 +81,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 		//set postRequest body info
 		NameValuePair[] data = { new NameValuePair("searchType", "1"), new NameValuePair("keyWords", "上海"+conditions) };
 		String nums = getPageNums(url,data);
+		logger.debug(" nums :{}",nums);
 		if(nums == null || nums.isEmpty()){
 			return null;
 		}
@@ -88,6 +93,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 			  for (String key : infoMap.keySet()) {
 				  if(key.equals("1")) {
 					  tableList =   parseResponseIsEstablishment(infoMap.get("1"));
+					  logger.debug(" check company status :{}",tableList!=null?" Establish":" Cancellation");
 					 if(tableList!=null){
 						 idList =   judgeDateWhetherAccord(tableList);
 						 String responseBody =new String();
@@ -95,12 +101,13 @@ public  List<String> readFileByCharteArray() throws IOException {
 							 for(int x = 0;x<idList.size(); x++){
 								 responseBody	  =  getCompanyDetails("http://www.sgs.gov.cn/lz/etpsInfo.do?method=viewDetail",idList.get(x));  
 								 company =  getCompanyDetail(responseBody);
+								 
 								 retMap =  companyService.writeInformationDB(company);
 							 }
 						  }
 					 }
 				  }else{
-					  System.out.println("没有信息");
+					 logger.debug(" get response detatils is  null !");
 				  }
 			 }
 		}
@@ -156,7 +163,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 				if( company.getOperateScope().equals("无")){
 					company.setOperateScope(elementMap.containsKey("经营范围及方式") ? elementMap.get("经营范围及方式") : "无");
 				}
-		
+				logger.debug(" company details : {}",company.toString());
 		return company;
 		
 	}
@@ -174,6 +181,7 @@ public  List<String> readFileByCharteArray() throws IOException {
 			 httpClient.executeMethod(postMethod);
 			 response =  new String(postMethod.getResponseBodyAsString().getBytes("GBK"));
 		        System.out.println("~~~"+response);
+		        logger.debug(response);
 		 }catch(Exception e){
 			 e.printStackTrace();
 		 }
@@ -184,10 +192,9 @@ public  List<String> readFileByCharteArray() throws IOException {
 		List<Map<String,String>> save = new ArrayList<>();  
 		 for (Map<String, String> m : tableList)  {  
 		      for (String k : m.keySet() ) {  
-		        System.out.println(k + " : " + m.get(k)+"-------"+m.get(k).substring(8, 16)); 
-		        System.out.println(m.get(k).substring(8, 16));
 		        if(Integer.parseInt(m.get(k).substring(8, 16)) < 20150801 ){
 		        	save.add(m);
+		        	logger.debug("Conform to the :{}",m.toString());
 		        }
 		      }  
 		    }
@@ -235,13 +242,11 @@ public  List<String> readFileByCharteArray() throws IOException {
 			httpClient.executeMethod(postMethod);
 			//Returns the response body of the HTTP method to byte[]
 			String response =  new String(postMethod.getResponseBodyAsString().getBytes("GBK"));
-			System.out.println(response);
+			logger.debug("search keyword response :{}",response);
 			//check return response body whether hava null or hava details
 			 if(response.indexOf("未找到符合")==-1){
 				 // hava details 
 				 retMap.put("1",response);
-				 System.out.println(retMap.get("1"));
-//				 System.out.println("response:"+response);
 			 }else{
 				 retMap.put("0","postRequest return null !!");
 			 }
