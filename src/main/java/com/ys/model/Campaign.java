@@ -28,7 +28,7 @@ public class Campaign {
     private String actDetails;
 
     public Campaign() {
-    	this.createTime = new Timestamp(System.currentTimeMillis());
+        this.createTime = new Timestamp(System.currentTimeMillis());
     }
     
     public String getId() {

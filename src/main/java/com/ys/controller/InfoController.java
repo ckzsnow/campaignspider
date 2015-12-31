@@ -21,34 +21,34 @@ import com.ys.service.ICompanyService;
 
 @Controller
 public class InfoController {
-	
-	@Autowired
-	private ICampaignService campaignService;
-	@Autowired
-	private ICompanyService companyService;
-	@RequestMapping("/admin/getUserId")
-	@ResponseBody
-	public Map<String, String> getUserId(HttpServletRequest request) {
-		Map<String, String> retMap = new HashMap<>();
-		String userId = (String)request.getSession().getAttribute(ConstantCode.USER_SESSION_ID);
-		retMap.put("userId", userId);
-		return retMap;
-	}
-	
-	@RequestMapping("/admin/getCampaignData")
-	@ResponseBody
-	public List<Campaign> getCampaignData(HttpServletRequest request) {
-		String currentPage = request.getParameter("currentPage");
-		String amountPerPage = request.getParameter("amountPerPage");
-		List<Campaign> retList = campaignService.getCampaign(currentPage, amountPerPage);
-		return retList;
-	}
-	@RequestMapping("/admin/getCompanyData")
-	@ResponseBody
-	public List<Company> getCompanyData(HttpServletRequest request) {
-		String currentPage = request.getParameter("currentPage");
-		String amountPerPage = request.getParameter("numPerPage");
-		List<Company> retList = companyService.getCompany(currentPage, amountPerPage);
-		return retList;
-	}
+    
+    @Autowired
+    private ICampaignService campaignService;
+    @Autowired
+    private ICompanyService companyService;
+    @RequestMapping("/admin/getUserId")
+    @ResponseBody
+    public Map<String, String> getUserId(HttpServletRequest request) {
+        Map<String, String> retMap = new HashMap<>();
+        String userId = (String)request.getSession().getAttribute(ConstantCode.USER_SESSION_ID);
+        retMap.put("userId", userId);
+        return retMap;
+    }
+    
+    @RequestMapping("/admin/getCampaignData")
+    @ResponseBody
+    public List<Campaign> getCampaignData(HttpServletRequest request) {
+        String currentPage = request.getParameter("currentPage");
+        String amountPerPage = request.getParameter("amountPerPage");
+        List<Campaign> retList = campaignService.getCampaign(currentPage, amountPerPage);
+        return retList;
+    }
+    @RequestMapping("/admin/getCompanyData")
+    @ResponseBody
+    public List<Company> getCompanyData(HttpServletRequest request) {
+        String currentPage = request.getParameter("currentPage");
+        String amountPerPage = request.getParameter("numPerPage");
+        List<Company> retList = companyService.getCompany(currentPage, amountPerPage);
+        return retList;
+    }
 }

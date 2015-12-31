@@ -4,7 +4,7 @@ import com.ys.model.User;
 
 public interface UserMapper {
     
-	int deleteByUserId(String userId);
+    int deleteByUserId(String userId);
 
     int insert(User user);
 
