@@ -15,47 +15,47 @@ import com.ys.service.ICampaignService;
 @Service("campaignService")
 public class CampaignServiceImpl implements ICampaignService {
 
-	@Autowired
-	private CampaignMapper campaignMapper;
+    @Autowired
+    private CampaignMapper campaignMapper;
 
-	@Override
-	public Map<String, String> writeInformationDB(List<Campaign> campaignList) {
-		Map<String, String> retMap = new HashMap<>();
-		boolean writeSuccess = true;
-		if(campaignList == null || campaignList.size() == 0) {
-			retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_CODE,
-					ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_MSG);
-			return retMap;
-		}
-		for (Campaign campaign : campaignList) {
-			Campaign oldCampaign = campaignMapper.selectByPrimaryKey(campaign.getId());
-			if(oldCampaign != null) continue;
-			if(campaignMapper.insert(campaign) == 0) writeSuccess = false;
-		}
-		if(writeSuccess) {
-			retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_CODE,
-					ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_MSG);
-		} else {
-			retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_CODE,
-					ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_MSG);
-		}
-		return retMap;
-	}
+    @Override
+    public Map<String, String> writeInformationDB(List<Campaign> campaignList) {
+        Map<String, String> retMap = new HashMap<>();
+        boolean writeSuccess = true;
+        if(campaignList == null || campaignList.size() == 0) {
+            retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_CODE,
+                    ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_EMPTY_ERROR_MSG);
+            return retMap;
+        }
+        for (Campaign campaign : campaignList) {
+            Campaign oldCampaign = campaignMapper.selectByPrimaryKey(campaign.getId());
+            if(oldCampaign != null) continue;
+            if(campaignMapper.insert(campaign) == 0) writeSuccess = false;
+        }
+        if(writeSuccess) {
+            retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_CODE,
+                    ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_SUCCESS_MSG);
+        } else {
+            retMap.put(ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_CODE,
+                    ConstantCode.CAMPAIGN_SERVICE_WRITE_DATABASE_WRITE_ERROR_MSG);
+        }
+        return retMap;
+    }
 
-	@Override
-	public List<Campaign> getCampaign(String currentPage, String amountPerPage) {
-		Page<Campaign> page = new Page<>();
-		int currentPage_ = 1;
-		int amountPerPage_ = 5;
-		try {
-			currentPage_ = Integer.valueOf(currentPage);
-			amountPerPage_ =Integer.valueOf(amountPerPage);
-		} catch(NumberFormatException e) {
-			//ignore
-		}
-		page.setPageNo(currentPage_);
-		page.setPageSize(amountPerPage_);
-		return campaignMapper.selectByPage(page);
-	}
+    @Override
+    public List<Campaign> getCampaign(String currentPage, String amountPerPage) {
+        Page<Campaign> page = new Page<>();
+        int currentPage_ = 1;
+        int amountPerPage_ = 5;
+        try {
+            currentPage_ = Integer.valueOf(currentPage);
+            amountPerPage_ =Integer.valueOf(amountPerPage);
+        } catch(NumberFormatException e) {
+            //ignore
+        }
+        page.setPageNo(currentPage_);
+        page.setPageSize(amountPerPage_);
+        return campaignMapper.selectByPage(page);
+    }
 
 }

@@ -12,7 +12,7 @@ public class User {
     private Timestamp createTime;
 
     public User() {
-    	this.createTime = new Timestamp(System.currentTimeMillis());
+        this.createTime = new Timestamp(System.currentTimeMillis());
     }
     
     public Integer getId() {
