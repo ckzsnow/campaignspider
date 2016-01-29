@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ys.dao.TrainUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ys.model.TrainUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="box_txt" property="boxTxt" jdbcType="VARCHAR" />
+    <result column="box_x" property="boxX" jdbcType="VARCHAR" />
+    <result column="box_y" property="boxY" jdbcType="VARCHAR" />
+    <result column="box_w" property="boxW" jdbcType="VARCHAR" />
+    <result column="box_h" property="boxH" jdbcType="VARCHAR" />
+    <result column="box_b" property="boxB" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, img, box_txt, box_x, box_y, box_w, box_h, box_b, user_id, check_status
+  </sql>
+  <select id="selectTrainUserDetails" resultMap="BaseResultMap" >
+    select *
+    from train_user where check_status = 0
+  </select>
+  <insert id="insertTrainUser" parameterType="com.ys.model.TrainUser" >
+    insert into train_user (  id, img, box_txt, box_x, box_y, box_w, box_h, box_b, user_id, check_status)
+    values (#{id,jdbcType=INTEGER}, #{img,jdbcType=VARCHAR}, #{boxTxt,jdbcType=VARCHAR}, 
+      #{boxX,jdbcType=VARCHAR}, #{boxY,jdbcType=VARCHAR}, #{boxW,jdbcType=VARCHAR}, 
+      #{boxH,jdbcType=VARCHAR}, #{boxB,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+      #{checkStatus,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateTrainUserBoxTxt" parameterType="com.ys.model.TrainUser" >
+    update train_user
+    set box_txt = #{boxTxt,jdbcType=VARCHAR}, user_id = #{userId,jdbcType=VARCHAR},check_status= #{checkStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateTrainUserCheckStatus" parameterType="com.ys.model.TrainUser" >
+    update train_user
+    set  user_id = #{userId,jdbcType=VARCHAR},check_status= #{checkStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

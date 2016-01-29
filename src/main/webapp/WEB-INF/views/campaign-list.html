@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta charset="utf-8">
@@ -25,13 +25,13 @@
 <![endif]-->
 <style>
 .act_container {
-	width: 800px;
-	height:162px;
-	margin: 20px auto;
-	background:#fff;
+    width: 800px;
+    height:162px;
+    margin: 20px auto;
+    background:#fff;
 }
 .with_border {
-	border:1px solid green;
+    border:1px solid green;
 }
 .click_index {
 }
@@ -42,10 +42,10 @@
 <div id="retList"></div>
 <div class="act_container" id="pageNav" style="display:none;">
     <div style="float:left;">
-    	<button id="preButton" class="btn btn-success radius">上一页</button>
+        <button id="preButton" class="btn btn-success radius">上一页</button>
     </div>
     <div style="float:right;">
-	    <span style="margin-right:20px;">当前页码：第<span id="current_page_num">1</span>页</span><button id="nextButton" class="btn btn-success radius">下一页</button>
+        <span style="margin-right:20px;">当前页码：第<span id="current_page_num">1</span>页</span><button id="nextButton" class="btn btn-success radius">下一页</button>
     </div>
 </div>
 </body>
@@ -57,65 +57,63 @@
 <script type="text/javascript" src="/js/H-ui.admin.doc.js"></script>
 <script type="text/javascript">
 $(function(){$(window).on("scroll",$backToTopFun);$backToTopFun();});
-
 var currentPage = 1;
 var numPerPage = 5;
 var isLastPage = false;
 var currentDataList;
 function getData() {
-	var index = layer.load(1, {
-	    shade: [0.5,'#000']
-	});
-	$.ajax({
-		url : '/admin/getCampaignData',
-		type : "POST",
-		data : {
-			currentPage : currentPage,
-			numPerPage : numPerPage
-		},
-		success : function(data) {
-			if(data != null && data != undefined && data.length != 0) {
-				var container = document.getElementById('retList');
-				container.innerHTML = "";
-				var list = "";
-				for(var o in data) {
-					list = list + "<div class='act_container with_border'><div><div style='float:left;width:160px;'><img style='width:268px;height:160px;' src='"+data[o].actSnapshot+"'></div><div style='float:right;width:530px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a class='click_index' index='"+o+"' href='javascript:void(0);'><h4>"+data[o].actName+"</h4></a><div style='margin-left:10px;'><img src='/images/backgrounds_10.jpg'><span style='margin-left:5px;'>"+data[o].actTime+"</span></div><div style='margin-left:10px;margin-top:5px;'><img src='/images/backgrounds_13.jpg'><span style='margin-left:5px;'>"+data[o].actDestination+"</span></div><div style='margin-left:10px;margin-top:5px;'><img style='width:50px;height:50px;' src='"+data[o].actOriginatorImage+"'><span style='margin-left:10px;'>"+data[o].actOriginator+"</span><div style='float:right;'><a href='"+data[o].actEnroll+"' class='btn btn-success radius' style='width:100px;height:40px;margin-top:10px;margin-right:20px;'>我要报名</a></div></div></div></div></div>";
-				}
-				container.innerHTML = list;
-				document.getElementById('pageNav').style.display = "";
-				document.getElementById('current_page_num').innerHTML = currentPage;
-				currentDataList = data;
-			} else {
-				layer.msg("未获取到数据，请稍后重试",{icon:0, time: 1000});
-				if(currentPage > 1) currentPage--;
-			}
-			layer.close(index);
-		},
-		error : function() {
-			layer.msg("服务器暂时繁忙，请稍后重试",{icon:0, time: 1000});
-			layer.close(index);
-		}
-	});
+    var index = layer.load(1, {
+        shade: [0.5,'#000']
+    });
+    $.ajax({
+        url : '/admin/getCampaignData',
+        type : "POST",
+        data : {
+            currentPage : currentPage,
+            numPerPage : numPerPage
+        },
+        success : function(data) {
+            if(data != null && data != undefined && data.length != 0) {
+                var container = document.getElementById('retList');
+                container.innerHTML = "";
+                var list = "";
+                for(var o in data) {
+                    list = list + "<div class='act_container with_border'><div><div style='float:left;width:160px;'><img style='width:268px;height:160px;' src='"+data[o].actSnapshot+"'></div><div style='float:right;width:530px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;'><a class='click_index' index='"+o+"' href='javascript:void(0);'><h4>"+data[o].actName+"</h4></a><div style='margin-left:10px;'><img src='/images/backgrounds_10.jpg'><span style='margin-left:5px;'>"+data[o].actTime+"</span></div><div style='margin-left:10px;margin-top:5px;'><img src='/images/backgrounds_13.jpg'><span style='margin-left:5px;'>"+data[o].actDestination+"</span></div><div style='margin-left:10px;margin-top:5px;'><img style='width:50px;height:50px;' src='"+data[o].actOriginatorImage+"'><span style='margin-left:10px;'>"+data[o].actOriginator+"</span><div style='float:right;'><a href='"+data[o].actEnroll+"' class='btn btn-success radius' style='width:100px;height:40px;margin-top:10px;margin-right:20px;'>我要报名</a></div></div></div></div></div>";
+                }
+                container.innerHTML = list;
+                document.getElementById('pageNav').style.display = "";
+                document.getElementById('current_page_num').innerHTML = currentPage;
+                currentDataList = data;
+            } else {
+                layer.msg("未获取到数据，请稍后重试",{icon:0, time: 1000});
+                if(currentPage > 1) currentPage--;
+            }
+            layer.close(index);
+        },
+        error : function() {
+            layer.msg("服务器暂时繁忙，请稍后重试",{icon:0, time: 1000});
+            layer.close(index);
+        }
+    });
 }
 getData();
 document.getElementById('preButton').onclick = function() {
-	if(currentPage == 1) {
-		layer.msg("已经是首页了！",{icon:0, time: 1000});
-		return;
-	} else {
-		currentPage--;
-		getData();
-	}
+    if(currentPage == 1) {
+        layer.msg("已经是首页了！",{icon:0, time: 1000});
+        return;
+    } else {
+        currentPage--;
+        getData();
+    }
 }
 document.getElementById('nextButton').onclick = function() {
-	if(isLastPage) {
-		layer.msg("已经是最后一页了！",{icon:0, time: 1000});
-		return;
-	} else {
-		currentPage++;
-		getData();
-	}
+    if(isLastPage) {
+        layer.msg("已经是最后一页了！",{icon:0, time: 1000});
+        return;
+    } else {
+        currentPage++;
+        getData();
+    }
 }
-
 </script>
 </html>

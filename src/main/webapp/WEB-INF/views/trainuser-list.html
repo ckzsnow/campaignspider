@@ -1,0 +1,112 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="/css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="/css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/lib/iconfont/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/font-awesome.min.css" rel="stylesheet"
+	type="text/css" />
+<!--[if IE 7]>
+<link href="lib/font-awesome/font-awesome-ie7.min.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<style>
+.act_container {
+	width: 800px;
+	height: 162px;
+	margin: 20px auto;
+	background: #fff;
+}
+
+.with_border {
+	border: 1px solid green;
+}
+</style>
+<title>帮帮账-八爪鱼</title>
+</head>
+<body>
+<table class="table table-border table-bordered table-hover table-bg table-sort" style="width:auto;min-width:1200px;margin-left:20px;margin-right:20px;margin-top:20px;">
+    <thead>
+      <tr class="text-c">
+        <th style="word-break:keep-all;white-space:nowrap;">
+        <button type="button"  id="insert"  value="导入数据" style = "float: left;">导入数据</button>
+        <button type="button"  id="select"  value="导入数据" style="font-size: 20" >刷新数据</button>
+        </th>
+      </tr>
+    </thead>
+    <tbody  id="retList">
+    </tbody>
+  </table>
+</body>
+<script type="text/javascript" src="/lib/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="/lib/layer1.8/layer.min.js"></script>
+<script type="text/javascript" src="/js/H-ui.js"></script>
+<script type="text/javascript" src="/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="/js/H-ui.admin.doc.js"></script>
+<script type="text/javascript">
+$('#insert').click(
+		function() {		
+		     $.ajax({
+                 url : '/admin/insertTrainDetails',
+                 type : "POST",
+                 success : function(data) {
+                     if(data.error_code == "0") {
+                         alert('信息导入完成');
+                     } else {
+                    	 alert('出现问题了。:-O');
+                     }
+                 },
+                 error : function(data) {
+                     alert('导入异常！');
+                 }
+             });
+		}
+);
+$('#select').click(
+        function() {        
+             $.ajax({
+                 url : '/admin/selectTrainDetails',
+                 type : "POST",
+                 success : function(data) {
+                     if(data != null && data.length != 0) {
+                    	 var container = document.getElementById('retList');
+                    	 container = container.parentNode.parentNode;
+                    	 container.innerHTML = "";
+                         var list = "<form  action='/admin/updateTrainDetails' method='POST'><table>";
+                         var num =0;
+                         for(var o in data) {
+                             list = list + "<tr class='text-c' style><td><input type ='text'  id = 'dataId" + num + "' name = 'dataId" + num + "' style = 'display:none' value = "+data[o].id +" />"+data[o].id +"</td><td><img src='/training-data/"+data[o].img+"' alt=' "+data[o].boxTxt +"'></img></td><td>"+data[o].boxTxt+"</td><td><input type='text'  class='boxTxtClass' id= 'inputBtxt"+num+"'  name = 'inputBtxt"+num+"'></input></td></tr>";
+                             num++;
+                         }
+                         list = list + " <tr><td><button type='submit' id ='update' style = 'float: right;'>Update</button></td></tr>";
+                         list = list + "</table></form>";
+                         container.innerHTML = list;
+                     } else {
+                         alert("查询出现问题了。:I'm sorry");
+                     }
+                 },
+                 error : function(data) {
+                     alert('查询异常！');
+                 }
+             });
+        }
+);
+
+</script>
+</html>

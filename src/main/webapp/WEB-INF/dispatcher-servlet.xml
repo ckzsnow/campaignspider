@@ -52,6 +52,8 @@
 		cache-period="0" />
 	<mvc:resources mapping="/images/**" location="/WEB-INF/images/"
 		cache-period="0" />
+		<mvc:resources mapping="/training-data/**" location="/WEB-INF/training-data/"
+        cache-period="0" />
 	<mvc:resources mapping="/css/**" location="/WEB-INF/css/"
 		cache-period="0" />
 	<mvc:resources mapping="/fonts/**" location="/WEB-INF/fonts/"
